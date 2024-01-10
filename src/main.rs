@@ -13,6 +13,7 @@ struct Player{
     health: i32,
 }
 //Enemy data struct
+#[derive(Clone)]
 struct Enemy{
     enemy_type: String,
     damage: i32,
@@ -73,6 +74,7 @@ fn get_input(max:i32) -> i32{
 fn game(){
     let mainchar: Player = character_creation();
     println!("Hello {} welcome to your adventure!", mainchar.name);
+    combat(mainchar, random_enemy(initialize_enemies()));
 }
 
 fn character_creation() -> Player{
@@ -107,14 +109,19 @@ fn initialize_enemies() -> [Enemy; 3]{
         damage: 5,
         health: 10,
     };
-    //This line creates an array with the goblin, and slime objects stored inside
-    //
+    //This line creates an array with the enemy data stored 
     let enemy_array:[Enemy; 3] = (goblin, slime, grung).into();
     enemy_array
 }
 
-fn random_enemy(enemy_array:[Enemy; 3]) -> Enemy{
-    
+fn random_enemy(enemy_array: [Enemy; 3]) -> Enemy{
+    //Generate random number
+    let mut rng = rand::thread_rng();
+    let rng = rng.gen_range(0..2);
+    //Get enemy from that random index and return
+    let chosen: Enemy;
+    chosen = enemy_array[rng].clone();
+    chosen
 }
 
 fn combat(mainchar: Player, opp: Enemy){
