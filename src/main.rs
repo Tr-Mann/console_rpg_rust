@@ -1,8 +1,10 @@
-//========================
+//======================================================================
 //Author: Tristan Mann
 //Date January 9th 2024
-//========================
+//This projects is being rewritten in rust using LazyVim as code editor
+//======================================================================
 
+use rand::Rng;
 use std::io;
 //Struct used for the player's stats 
 struct Player{
@@ -11,8 +13,8 @@ struct Player{
     health: i32,
 }
 //Enemy data struct
-struct Enemies{
-    name: String,
+struct Enemy{
+    enemy_type: String,
     damage: i32,
     health: i32,
 }
@@ -23,6 +25,7 @@ fn main() {
     //Main game loop
     while is_running{
         main_menu();
+        initialize_enemies();
         input = get_input(2);
 
         if input == 1{
@@ -34,6 +37,7 @@ fn main() {
             is_running = exit();
         }
     }
+
 }
 
 //used to display the main menu of the game
@@ -57,12 +61,12 @@ fn get_input(max:i32) -> i32{
         //get input then convert to i32 again
         io::stdin().read_line(&mut input).expect("Invalid");
         let input = input.trim().parse::<i32>().expect("Holy moly");
-        
+
         if input <= max && input > 0 {
             return input;
         }
     }
-    
+
     input
 }
 
@@ -75,14 +79,47 @@ fn character_creation() -> Player{
     let mut input: String = String::new();
     println!("What's your name"); 
     io::stdin().read_line(&mut input).expect("Not a real name bub");
-    
-    //Creating an instance of a struct and initializing it properly
     let mainchar = Player{
-    name: input, 
+    name: input,
     health: 15,
-    damage:  8,
+    damage: 10,
     };
     mainchar
+}
+
+//Initialize enemies
+fn initialize_enemies() -> [Enemy; 3]{
+    //Find out how to use an array of this instead
+    let goblin = Enemy{
+    enemy_type: String::from("Goblin"),
+    damage: 4,
+    health: 15,
+    };
+    
+    let slime = Enemy{
+        enemy_type: String::from("Slime"),
+        damage: 2,
+        health: 10,
+    };
+
+    let grung = Enemy{
+        enemy_type: String::from("grung"),
+        damage: 5,
+        health: 10,
+    };
+    //This line creates an array with the goblin, and slime objects stored inside
+    //
+    let enemy_array:[Enemy; 3] = (goblin, slime, grung).into();
+    enemy_array
+}
+
+fn random_enemy(enemy_array:[Enemy; 3]) -> Enemy{
+    
+}
+
+fn combat(mainchar: Player, opp: Enemy){
+    
+    
 }
 
 fn exit() -> bool{
@@ -94,3 +131,6 @@ fn exit() -> bool{
     }
     return true;
 }
+
+
+
