@@ -81,7 +81,7 @@ fn character_creation() -> Player{
     let mut input: String = String::new();
     println!("What's your name"); 
     io::stdin().read_line(&mut input).expect("Not a real name bub");
-    let mainchar = Player{
+    let mut mainchar = Player{
     name: input,
     health: 15,
     damage: 10,
@@ -92,19 +92,19 @@ fn character_creation() -> Player{
 //Initialize enemies
 fn initialize_enemies() -> [Enemy; 3]{
     //Find out how to use an array of this instead
-    let goblin = Enemy{
+    let mut goblin = Enemy{
     enemy_type: String::from("Goblin"),
     damage: 4,
     health: 15,
     };
     
-    let slime = Enemy{
+    let mut slime = Enemy{
         enemy_type: String::from("Slime"),
         damage: 2,
         health: 10,
     };
 
-    let grung = Enemy{
+    let mut grung = Enemy{
         enemy_type: String::from("grung"),
         damage: 5,
         health: 10,
@@ -124,9 +124,26 @@ fn random_enemy(enemy_array: [Enemy; 3]) -> Enemy{
     chosen
 }
 
-fn combat(mainchar: Player, opp: Enemy){
-    println!("You find a wild {}", opp.enemy_type);
-    
+fn combat(mut mainchar: Player, mut opp: Enemy){
+    let mut rng = rand::thread_rng();
+    let mut fighting: bool = true;
+    while fighting{
+        println!("You find a wild {}\n 1.Attack\n 2.Heal\n", opp.enemy_type);
+        //Create container and get store user's input
+        let input = get_input(2);
+
+        if input == 1 {
+            opp.health -= rng.gen_range(0..mainchar.damage); 
+            println!("You hit the {} for {} damage it has {} health remaining", opp.enemy_type,"some", opp.health);
+        }
+        else if input == 2{
+            mainchar.health += 2;
+        }
+        if opp.health <= 0 || mainchar.health <= 0{
+            fighting = false;
+        }
+        //enemy turn next
+    }
 }
 
 fn exit() -> bool{
