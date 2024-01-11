@@ -114,10 +114,15 @@ fn initialize_enemies() -> [Enemy; 3]{
     enemy_array
 }
 
+fn env_encounters(){
+    println!("You walk through the tall grass when suddenly");
+    //Add multiple encounters, which will occur at random and may or may not include combat
+}
+
 fn random_enemy(enemy_array: [Enemy; 3]) -> Enemy{
     //Generate random number
     let mut rng = rand::thread_rng();
-    let rng = rng.gen_range(0..2);
+    let rng = rng.gen_range(0..3);
     //Get enemy from that random index and return
     let chosen: Enemy;
     chosen = enemy_array[rng].clone();
@@ -138,11 +143,26 @@ fn combat(mut mainchar: Player, mut opp: Enemy){
         }
         else if input == 2{
             mainchar.health += 2;
+            println!("You healed for 2 health you have {} health left", mainchar.health);
         }
         if opp.health <= 0 || mainchar.health <= 0{
             fighting = false;
         }
         //enemy turn next
+       if opp.health > 0{
+            //enemy's turn goes here now
+            mainchar.health -= rng.gen_range(0..opp.damage);
+            println!("You were hit for some damage by {} you have {} health left", opp.enemy_type, mainchar.health);
+       }
+       if opp.health <= 0 || mainchar.health <=0{
+            fighting = false;
+            if rng.gen_range(0..100) <20{
+                println!("You found an item");
+            }
+            else{
+                println!("You find nothing");
+            }
+       }
     }
 }
 
