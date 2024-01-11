@@ -125,7 +125,7 @@ fn random_enemy(enemy_array: [Enemy; 3]) -> Enemy{
 }
 
 fn combat(mainchar: Player, opp: Enemy){
-    
+    println!("You find a wild {}", opp.enemy_type);
     
 }
 
