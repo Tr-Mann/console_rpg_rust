@@ -175,6 +175,3 @@ fn exit() -> bool{
     }
     return true;
 }
-
-
-
